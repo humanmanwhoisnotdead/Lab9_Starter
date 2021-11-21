@@ -69,39 +69,132 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id="console-log">Console Log</button>
+      <button id="console-error">Console Error</button>
+      <button id="console-count">Console Count</button>
+      <button id="console-warn">Console Warn</button>
+      <button id="console-assert">Console Assert</button>
+      <button id="console-clear">Console Clear</button>
+      <button id="console-dir">Console Dir</button>
+      <button id="console-dirxml">Console dirxml</button>
+      <button id="console-group-start">Console Group Start</button>
+      <button id="console-group-end">Console Group End</button>
+      <button id="console-table">Console Table</button>
+      <button id="console-start-timer">Start Timer</button>
+      <button id="console-end-timer">End Timer</button>
+      <button id="console-trace">Console Trace</button>
+      <button id="console-error">Trigger a Global Error</button>
     </section>
   </main>
-
+  
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "8e2d01f04dc14335bd93fdc3ec026193"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                          
+  <script>
+    class NotNumError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "NotNumError";
+      }
+    }
+
     let form = document.querySelector('form');
+    let output;
+    let firstNum;
+    let secondNum;
+    let operator;
     form.addEventListener('submit', e => {
+      window.onerror = function() {console.log("error adding nums")};
       e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
+      output = document.querySelector('output');
+      firstNum = document.querySelector('#first-num').value;
+      secondNum = document.querySelector('#second-num').value;
+      operator = document.querySelector('#operator').value;
+      try {
+        if (isNaN(firstNum) || isNaN(secondNum)) {
+          throw new NotNumError("One or more of the inputs aren't numbers");
+        }
+      } catch(error) {
+        if (error instanceof NotNumError) {
+          console.error(error.message);
+        }
+      }
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      window.onerror = function() {};
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    document.getElementById('console-log').onclick = function() {
+      console.log("First is: " + document.querySelector('#first-num').value);
+    }
+    document.getElementById('console-error').onclick = function() {
+      console.error("This is an error");
+    }
+    document.getElementById('console-count').onclick = function() {
+      console.count(document.querySelector('#first-num').value);
+      console.count(document.querySelector('#second-num').value);
+      console.count(document.querySelector('output').innerHTML);
+    }
+    document.getElementById('console-warn').onclick = function() {
+      console.warn("Second is: " + document.querySelector('#second-num').value);
+    }
+    document.getElementById('console-assert').onclick = function() {
+      console.assert(firstNum >= secondNum, "The second num is greater");
+    }
+    document.getElementById('console-clear').onclick = function() {
+      console.clear();
+    }
+    document.getElementById('console-dir').onclick = function() {
+      console.dir(document.body);
+    }
+    document.getElementById('console-dirxml').onclick = function() {
+      console.dirxml(document.body);
+    }
+    document.getElementById('console-group-start').onclick = function() {
+      console.group('Starting Group');
+    }
+    document.getElementById('console-group-end').onclick = function() {
+      console.groupEnd('Starting Group');
+    }
+    document.getElementById('console-table').onclick = function() {
+      console.table([firstNum, secondNum, operator, output.innerHTML]);
+    }
+    document.getElementById('console-start-timer').onclick = function() {
+      console.time("Starting Timer");
+    }
+    document.getElementById('console-end-timer').onclick = function() {
+      console.timeEnd("Starting Timer");
+    }
+    document.getElementById('console-trace').onclick = function() {
+      doNothing()
+    }
+    document.getElementById('console-dirxml').onclick = function() {
+      console.dirxml(document.body);
+    }
+    document.getElementById('console-dirxml').onclick = function() {
+      console.dirxml(document.body);
+    }
+
+    function doNothing() {
+      let a = 1;
+      a++;
+      console.trace();
+    }
+
+    try {
+        let apple;
+        let temp = Apple * secondNum;
+      } catch(error) {
+        console.error("Can't multiply the apple");
+    }
   </script>
 </body>
 
