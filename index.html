@@ -83,10 +83,10 @@
       <button id="console-start-timer">Start Timer</button>
       <button id="console-end-timer">End Timer</button>
       <button id="console-trace">Console Trace</button>
-      <button id="console-error">Trigger a Global Error</button>
+      <button id="console-global-event">Trigger a Global Error</button>
     </section>
   </main>
-  
+
   <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
     window.TrackJS && TrackJS.install({ 
@@ -96,6 +96,7 @@
   </script>
                           
   <script>
+    var appppp = 1;
     class NotNumError extends Error {
       constructor(message) {
         super(message);
@@ -176,11 +177,9 @@
     document.getElementById('console-trace').onclick = function() {
       doNothing()
     }
-    document.getElementById('console-dirxml').onclick = function() {
-      console.dirxml(document.body);
-    }
-    document.getElementById('console-dirxml').onclick = function() {
-      console.dirxml(document.body);
+    document.getElementById('console-global-event').onclick = function() {
+      appppp++;
+      console.log(appppp);
     }
 
     function doNothing() {
